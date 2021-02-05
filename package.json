@@ -2,7 +2,7 @@
   "name": "defi-tutorial",
   "version": "0.1.0",
   "description": "DeFi Token Staking App",
-  "author": "gregory@dappuniversity.com",
+  "author": "nico",
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",

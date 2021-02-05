@@ -110,6 +110,16 @@ class App extends Component {
       });
   };
 
+  proposeTokens = (amount) => {
+    this.setState({ loading: true });
+    this.state.tokenFarm.methods
+      .proposeTokens()
+      .send({ from: this.state.account })
+      .on("transactionHash", (hash) => {
+        this.setState({ loading: false });
+      });
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -156,7 +166,7 @@ class App extends Component {
             >
               <div className="content mr-auto ml-auto">
                 <a
-                  href="http://www.dappuniversity.com/bootcamp"
+                  href="http://localhost:3000"
                   target="_blank"
                   rel="noopener noreferrer"
                 ></a>

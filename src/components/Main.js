@@ -23,7 +23,7 @@ class Main extends Component {
                   this.props.dappTokenBalance,
                   "Ether"
                 )}{" "}
-                DAPP
+                HIT
               </td>
             </tr>
           </tbody>
@@ -86,6 +86,16 @@ class Main extends Component {
               }}
             >
               UN-STAKE...
+            </button>
+            <button
+              type="submit"
+              className="btn btn-link btn-block btn-sm"
+              onClick={(event) => {
+                event.preventDefault();
+                this.props.proposeTokens();
+              }}
+            >
+              Propose Token 🎵
             </button>
           </div>
         </div>

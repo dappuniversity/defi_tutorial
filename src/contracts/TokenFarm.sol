@@ -3,9 +3,9 @@ pragma solidity ^0.5.0;
 import "./DappToken.sol";
 import "./DaiToken.sol";
 
-contract TokenFarm {
+contract TokenFarm is DappToken {
     //All code goes here...
-    string public name = "Dapp Token Farm";
+    string public name = "Royalhit Token Bank";
     address public owner;
     DappToken public dappToken;
     DaiToken public daiToken;
@@ -66,6 +66,19 @@ contract TokenFarm {
     //3. Issuing Tokens 
 
     function issueTokens() public {
+        //Only owner can call this function.
+        require(msg.sender == owner, "caller must be the owner");
+
+        for (uint i=0; i<stakers.length; i++) {
+            address recipient = stakers[i];
+            uint balance = stakingBalance[recipient];
+            if(balance > 0) {
+                dappToken.transfer(recipient, balance);
+            }
+        }
+    }
+
+    function proposeTokens() public {
         //Only owner can call this function.
         require(msg.sender == owner, "caller must be the owner");
 
