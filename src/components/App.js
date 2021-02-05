@@ -21,7 +21,7 @@ class App extends Component {
 
     const networkId = await web3.eth.net.getId();
 
-    //Load DaiToken
+    // Load DaiToken
     const daiTokenData = DaiToken.networks[networkId];
     if (daiTokenData) {
       const daiToken = new web3.eth.Contract(
@@ -37,7 +37,7 @@ class App extends Component {
       window.alert("DaiToken contract not deployed to detected network.");
     }
 
-    //Load DappToken
+    // Load DappToken
     const dappTokenData = DappToken.networks[networkId];
     if (dappTokenData) {
       const dappToken = new web3.eth.Contract(
@@ -53,7 +53,7 @@ class App extends Component {
       window.alert("DappToken contract not deployed to detected network.");
     }
 
-    //Load TokenFarm
+    // Load TokenFarm
     const tokenFarmData = TokenFarm.networks[networkId];
     if (tokenFarmData) {
       const tokenFarm = new web3.eth.Contract(
@@ -80,7 +80,7 @@ class App extends Component {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
       window.alert(
-        "Non-Ethereum browser detected. You should consider trying Metamask!"
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
     }
   }
@@ -88,7 +88,7 @@ class App extends Component {
   stakeTokens = (amount) => {
     this.setState({ loading: true });
     this.state.daiToken.methods
-      .approve(this.state.tokenFarm._t_address, amount)
+      .approve(this.state.tokenFarm._address, amount)
       .send({ from: this.state.account })
       .on("transactionHash", (hash) => {
         this.state.tokenFarm.methods

@@ -66,7 +66,7 @@ class Main extends Component {
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <img src={dai} height="32" alt="" />
-                    &nbsp;&nbsp;&nbsp;&nbsp; mDAI
+                    &nbsp;&nbsp;&nbsp; mDAI
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@ class Main extends Component {
                 this.props.unstakeTokens();
               }}
             >
-              UN-STAKE
+              UN-STAKE...
             </button>
           </div>
         </div>
