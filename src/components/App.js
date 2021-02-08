@@ -111,11 +111,21 @@ class App extends Component {
     }
   }
 
-  unstakeTokens = amount => {
-    this.setState({ loading: true });
-    this.state.tokenFarm.methods.unstakeTokens().send({ from: this.state.account }).on('transactionHash', hash => {
+  handleUnstakeTokens = async () => {
+    try {
+      this.setState({ loading: true });
+      await this.state.tokenFarm.methods
+        .unstakeTokens()
+        .send({ from: this.state.account });
+      
+      this.handleDaiTokenDataChange();
+      this.handleDappTokenDataChange();
+      this.handleTokenFarmDataChange();
+    } catch (error) {
+      console.log('[handleUnstakeTokens] error.message => ', error.message);
+    } finally {
       this.setState({ loading: false });
-    });
+    }
   }
 
   handleDaiTokenDataChange = async () => {
@@ -156,7 +166,7 @@ class App extends Component {
           dappTokenBalance={this.state.dappTokenBalance}
           stakingBalance={this.state.stakingBalance}
           stakeTokens={this.handleStakeTokens}
-          unstakeTokens={this.unstakeTokens} />
+          unstakeTokens={this.handleUnstakeTokens} />
       );
     }
 
