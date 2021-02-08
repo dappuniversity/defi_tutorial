@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
-import dai from '../dai.png'
+
+import React, { Component } from 'react';
+import dai from '../dai.png';
 
 class Main extends Component {
-
   render() {
     return (
       <div id="content" className="mt-3">
-
         <table className="table table-borderless text-muted text-center">
           <thead>
             <tr>
@@ -21,11 +20,8 @@ class Main extends Component {
             </tr>
           </tbody>
         </table>
-
         <div className="card mb-4" >
-
           <div className="card-body">
-
             <form className="mb-3" onSubmit={(event) => {
                 event.preventDefault()
                 let amount
@@ -62,11 +58,10 @@ class Main extends Component {
                 event.preventDefault()
                 this.props.unstakeTokens()
               }}>
-                UN-STAKE...
-              </button>
+              UN-STAKE...
+            </button>
           </div>
         </div>
-
       </div>
     );
   }
