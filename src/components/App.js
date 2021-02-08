@@ -2,9 +2,9 @@
 import React from 'react';
 import Web3 from 'web3';
 
-import DaiToken from '../abis/DaiToken.json';
-import DappToken from '../abis/DappToken.json';
-import TokenFarm from '../abis/TokenFarm.json';
+import DaiToken from '../built-contracts/DaiToken.json';
+import DappToken from '../built-contracts/DappToken.json';
+import TokenFarm from '../built-contracts/TokenFarm.json';
 import Navbar from './Navbar';
 import Main from './Main';
 import './App.css';
