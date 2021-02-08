@@ -35,7 +35,8 @@
     "truffle-migrate": "truffle migrate",
     "truffle-migrate-reset": "truffle migrate --reset",
     "truffle-console": "truffle console",
-    "truffle-test": "truffle test"
+    "truffle-test": "truffle test",
+    "truffle-issue-dapp-tokens": "truffle exec scripts/issue-dapp-tokens.js"
   },
   "eslintConfig": {
     "extends": "react-app"

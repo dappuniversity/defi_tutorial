@@ -6,9 +6,9 @@ import dai from '../dai.png';
 const Main = ({
   stakingBalance,
   dappTokenBalance,
-  stakeTokens,
+  stakeDaiTokens,
   daiTokenBalance,
-  unstakeTokens
+  unstakeDaiTokens
 }) => {
   const inputRef = React.useRef(null);
 
@@ -18,11 +18,11 @@ const Main = ({
     let amount;
     amount = inputRef.current.value.toString();
     amount = window.web3.utils.toWei(amount, 'Ether');
-    stakeTokens(amount);
+    stakeDaiTokens(amount);
   };
 
   const handleUnstakeClick = () => {
-    unstakeTokens();
+    unstakeDaiTokens();
   };
 
   return (

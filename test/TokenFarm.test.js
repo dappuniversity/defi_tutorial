@@ -11,6 +11,7 @@ function tokens(n) {
   return web3.utils.toWei(n, 'ether');
 }
 
+// owner => accounts[0] and investor => accounts[1]
 contract('TokenFarm', ([owner, investor]) => {
   let daiToken, dappToken, tokenFarm;
 
@@ -63,7 +64,7 @@ contract('TokenFarm', ([owner, investor]) => {
 
       // Stake Mock DAI Tokens
       await daiToken.approve(tokenFarm.address, tokens('100'), { from: investor });
-      await tokenFarm.stakeTokens(tokens('100'), { from: investor });
+      await tokenFarm.stakeDaiTokens(tokens('100'), { from: investor });
 
       // Check staking result
       result = await daiToken.balanceOf(investor);
@@ -79,17 +80,17 @@ contract('TokenFarm', ([owner, investor]) => {
       assert.equal(result.toString(), 'true', 'investor staking status correct after staking');
 
       // Issue Tokens
-      await tokenFarm.issueTokens({ from: owner });
+      await tokenFarm.issueDappTokens({ from: owner });
 
       // Check balances after issuance
       result = await dappToken.balanceOf(investor);
       assert.equal(result.toString(), tokens('100'), 'investor DApp Token wallet balance correct after issuance');
 
       // Ensure that only owner can issue tokens
-      await tokenFarm.issueTokens({ from: investor }).should.be.rejected;
+      await tokenFarm.issueDappTokens({ from: investor }).should.be.rejected;
 
       // Unstake tokens
-      await tokenFarm.unstakeTokens({ from: investor });
+      await tokenFarm.unstakeDaiTokens({ from: investor });
 
       // Check results after unstaking
       result = await daiToken.balanceOf(investor);

@@ -20,7 +20,7 @@ contract TokenFarm {
         owner = msg.sender;
     }
 
-    function stakeTokens(uint _amount) public {
+    function stakeDaiTokens(uint _amount) public {
         // Require amount greater than 0
         require(_amount > 0, "amount cannot be 0");
 
@@ -41,7 +41,7 @@ contract TokenFarm {
     }
 
     // Unstaking Tokens (Withdraw)
-    function unstakeTokens() public {
+    function unstakeDaiTokens() public {
         // Fetch staking balance
         uint balance = stakingBalance[msg.sender];
 
@@ -59,7 +59,7 @@ contract TokenFarm {
     }
 
     // Issuing Tokens
-    function issueTokens() public {
+    function issueDappTokens() public {
         // Only owner can call this function
         require(msg.sender == owner, "caller must be the owner");
 

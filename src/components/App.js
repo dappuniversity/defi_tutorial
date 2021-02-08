@@ -93,14 +93,14 @@ const App = () => {
     }
   };
 
-  const handleStakeTokens = async amount => {
+  const handleStakeDaiTokens = async amount => {
     try {
       setLoading(true);
       await daiToken.methods
         .approve(tokenFarm._address, amount)
         .send({ from: account });
       await tokenFarm.methods
-        .stakeTokens(amount)
+        .stakeDaiTokens(amount)
         .send({ from: account });
 
       handleDaiTokenDataChange();
@@ -113,11 +113,11 @@ const App = () => {
     }
   };
 
-  const handleUnstakeTokens = async () => {
+  const handleUnstakeDaiTokens = async () => {
     try {
       setLoading(true);
       await tokenFarm.methods
-        .unstakeTokens()
+        .unstakeDaiTokens()
         .send({ from: account });
       
       handleDaiTokenDataChange();
@@ -166,8 +166,8 @@ const App = () => {
         daiTokenBalance={daiTokenBalance}
         dappTokenBalance={dappTokenBalance}
         stakingBalance={stakingBalance}
-        stakeTokens={handleStakeTokens}
-        unstakeTokens={handleUnstakeTokens} />
+        stakeDaiTokens={handleStakeDaiTokens}
+        unstakeDaiTokens={handleUnstakeDaiTokens} />
     );
   }
 
