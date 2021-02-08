@@ -1,6 +1,7 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import Web3 from 'web3';
+
 import DaiToken from '../abis/DaiToken.json';
 import DappToken from '../abis/DappToken.json';
 import TokenFarm from '../abis/TokenFarm.json';
@@ -8,57 +9,58 @@ import Navbar from './Navbar';
 import Main from './Main';
 import './App.css';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      account: '0x0',
-      daiToken: null,
-      dappToken: null,
-      tokenFarm: null,
-      daiTokenBalance: '0',
-      dappTokenBalance: '0',
-      stakingBalance: '0',
-      loading: true
-    };
-  }
-
-  async componentWillMount() {
-    await this.handleLoadWeb3();
-    await this.handleLoadBlockchainData();
-  }
-
-  async handleLoadWeb3() {
-    try {
-      if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
-      } else if (window.web3) {
-        window.web3 = new Web3(window.web3.currentProvider);
-      } else {
-        window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
-      }
-    } catch (error) {
-      console.log('[handleLoadWeb3] error.message => ', error.message);
+const loadWeb3 = async () => {
+  try {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
+  } catch (error) {
+    console.log('[loadWeb3] error.message => ', error.message);
   }
+};
 
-  async handleLoadBlockchainData() {
+const App = () => {
+  const [account, setAccount] = React.useState('0x0');
+
+  const [daiToken, setDaiToken] = React.useState(null);
+  const [dappToken, setDappToken] = React.useState(null);
+  const [tokenFarm, setTokenFarm] = React.useState(null);
+
+  const [daiTokenBalance, setDaiTokenBalance] = React.useState('0');
+  const [dappTokenBalance, setDappTokenBalance] = React.useState('0');
+  const [stakingBalance, setStakingBalance] = React.useState('0');
+
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    (async () => {
+      await loadWeb3();
+      await handleLoadBlockchainData();
+    })();
+  }, []);
+
+  const handleLoadBlockchainData = async () => {
     try {
       const web3 = window.web3;
 
       const accounts = await web3.eth.getAccounts();
-      this.setState({ account: accounts[0] });
+      const firstAccount = accounts[0];
+      setAccount(firstAccount);
 
       const networkId = await web3.eth.net.getId();
 
       // Load DaiToken
       const daiTokenData = DaiToken.networks[networkId];
       if(daiTokenData) {
-        const daiToken = new web3.eth.Contract(DaiToken.abi, daiTokenData.address);
-        this.setState({ daiToken });
-        const daiTokenBalance = await daiToken.methods.balanceOf(this.state.account).call();
-        this.setState({ daiTokenBalance: daiTokenBalance.toString() });
+        const theDaiToken = new web3.eth.Contract(DaiToken.abi, daiTokenData.address);
+        setDaiToken(theDaiToken);
+        const theDaiTokenBalance = await theDaiToken.methods.balanceOf(firstAccount).call();
+        setDaiTokenBalance(theDaiTokenBalance.toString());
       } else {
         window.alert('DaiToken contract not deployed to detected network.');
       }
@@ -66,10 +68,10 @@ class App extends Component {
       // Load DappToken
       const dappTokenData = DappToken.networks[networkId];
       if(dappTokenData) {
-        const dappToken = new web3.eth.Contract(DappToken.abi, dappTokenData.address);
-        this.setState({ dappToken });
-        const dappTokenBalance = await dappToken.methods.balanceOf(this.state.account).call();
-        this.setState({ dappTokenBalance: dappTokenBalance.toString() });
+        const theDappToken = new web3.eth.Contract(DappToken.abi, dappTokenData.address);
+        setDappToken(theDappToken);
+        const theDappTokenBalance = await theDappToken.methods.balanceOf(firstAccount).call();
+        setDappTokenBalance(theDappTokenBalance);
       } else {
         window.alert('DappToken contract not deployed to detected network.');
       }
@@ -77,119 +79,117 @@ class App extends Component {
       // Load TokenFarm
       const tokenFarmData = TokenFarm.networks[networkId];
       if(tokenFarmData) {
-        const tokenFarm = new web3.eth.Contract(TokenFarm.abi, tokenFarmData.address);
-        this.setState({ tokenFarm });
-        const stakingBalance = await tokenFarm.methods.stakingBalance(this.state.account).call();
-        this.setState({ stakingBalance: stakingBalance.toString() });
+        const theTokenFarm = new web3.eth.Contract(TokenFarm.abi, tokenFarmData.address);
+        setTokenFarm(theTokenFarm);
+        const theStakingBalance = await theTokenFarm.methods.stakingBalance(firstAccount).call();
+        setStakingBalance(theStakingBalance);
       } else {
         window.alert('TokenFarm contract not deployed to detected network.');
       }
     } catch (error) {
       console.log('[handleLoadBlockchainData] error.message => ', error.message);
     } finally {
-      this.setState({ loading: false });
+      setLoading(false);
     }
-  }
+  };
 
-  handleStakeTokens = async amount => {
+  const handleStakeTokens = async amount => {
     try {
-      this.setState({ loading: true });
-      await this.state.daiToken.methods
-        .approve(this.state.tokenFarm._address, amount)
-        .send({ from: this.state.account });
-      await this.state.tokenFarm.methods
+      setLoading(true);
+      await daiToken.methods
+        .approve(tokenFarm._address, amount)
+        .send({ from: account });
+      await tokenFarm.methods
         .stakeTokens(amount)
-        .send({ from: this.state.account });
+        .send({ from: account });
 
-      this.handleDaiTokenDataChange();
-      this.handleDappTokenDataChange();
-      this.handleTokenFarmDataChange();
+      handleDaiTokenDataChange();
+      handleDappTokenDataChange();
+      handleTokenFarmDataChange();
     } catch (error) {
       console.log('[handleStakeTokens] error.message => ', error.message);
     } finally {
-      this.setState({ loading: false });
+      setLoading(false);
     }
-  }
+  };
 
-  handleUnstakeTokens = async () => {
+  const handleUnstakeTokens = async () => {
     try {
-      this.setState({ loading: true });
-      await this.state.tokenFarm.methods
+      setLoading(true);
+      await tokenFarm.methods
         .unstakeTokens()
-        .send({ from: this.state.account });
+        .send({ from: account });
       
-      this.handleDaiTokenDataChange();
-      this.handleDappTokenDataChange();
-      this.handleTokenFarmDataChange();
+      handleDaiTokenDataChange();
+      handleDappTokenDataChange();
+      handleTokenFarmDataChange();
     } catch (error) {
       console.log('[handleUnstakeTokens] error.message => ', error.message);
     } finally {
-      this.setState({ loading: false });
+      setLoading(false);
     }
-  }
+  };
 
-  handleDaiTokenDataChange = async () => {
+  const handleDaiTokenDataChange = async () => {
     try {
-      const daiTokenBalance = await this.state.daiToken.methods.balanceOf(this.state.account).call();
-      this.setState({ daiTokenBalance: daiTokenBalance.toString() });
+      const theDaiTokenBalance = await daiToken.methods.balanceOf(account).call();
+      setDaiTokenBalance(theDaiTokenBalance.toString());
     } catch (error) {
       console.log('[handleDaiTokenDataChange] error.message => ', error.message);
     }
-  }
+  };
 
-  handleDappTokenDataChange = async () => {
+  const handleDappTokenDataChange = async () => {
     try {
-      const dappTokenBalance = await this.state.dappToken.methods.balanceOf(this.state.account).call();
-      this.setState({ dappTokenBalance: dappTokenBalance.toString() });
+      const theDappTokenBalance = await dappToken.methods.balanceOf(account).call();
+      setDappTokenBalance(theDappTokenBalance.toString());
     } catch (error) {
       console.log('[handleDappTokenDataChange] error.message => ', error.message);
     }
-  }
+  };
 
-  handleTokenFarmDataChange = async () => {
+  const handleTokenFarmDataChange = async () => {
     try {
-      const stakingBalance = await this.state.tokenFarm.methods.stakingBalance(this.state.account).call();
-      this.setState({ stakingBalance: stakingBalance.toString() });
+      const theStakingBalance = await tokenFarm.methods.stakingBalance(account).call();
+      setStakingBalance(theStakingBalance.toString());
     } catch (error) {
       console.log('[handleTokenFarmDataChange] error.message => ', error.message);
     }
-  }
+  };
 
-  render() {
-    let content;
-    if(this.state.loading) {
-      content = <p id="loader" className="text-center">Loading...</p>;
-    } else {
-      content = (
-        <Main
-          daiTokenBalance={this.state.daiTokenBalance}
-          dappTokenBalance={this.state.dappTokenBalance}
-          stakingBalance={this.state.stakingBalance}
-          stakeTokens={this.handleStakeTokens}
-          unstakeTokens={this.handleUnstakeTokens} />
-      );
-    }
-
-    return (
-      <div>
-        <Navbar account={this.state.account} />
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
-              <div className="content mr-auto ml-auto">
-                <a
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                </a>
-                {content}
-              </div>
-            </main>
-          </div>
-        </div>
-      </div>
+  let content;
+  if(loading) {
+    content = <p id="loader" className="text-center">Loading...</p>;
+  } else {
+    content = (
+      <Main
+        daiTokenBalance={daiTokenBalance}
+        dappTokenBalance={dappTokenBalance}
+        stakingBalance={stakingBalance}
+        stakeTokens={handleStakeTokens}
+        unstakeTokens={handleUnstakeTokens} />
     );
   }
-}
+
+  return (
+    <div>
+      <Navbar account={account} />
+      <div className="container-fluid mt-5">
+        <div className="row">
+          <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '600px' }}>
+            <div className="content mr-auto ml-auto">
+              <a
+                href="http://www.dappuniversity.com/bootcamp"
+                target="_blank"
+                rel="noopener noreferrer">
+              </a>
+              {content}
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default App;
