@@ -4,6 +4,7 @@ require('babel-polyfill');
 
 module.exports = {
   networks: {
+    // Connection to Ganache
     development: {
       host: '127.0.0.1',
       port: 7545,
