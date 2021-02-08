@@ -1,11 +1,14 @@
 
 import React, { Component } from 'react';
+
 import dai from '../dai.png';
 
 class Main extends Component {
   render() {
     return (
-      <div id="content" className="mt-3">
+      <div
+        id="content"
+        className="mt-3">
         <table className="table table-borderless text-muted text-center">
           <thead>
             <tr>
@@ -33,7 +36,11 @@ class Main extends Component {
                 this.props.stakeTokens(amount);
               }}>
               <div>
-                <label className="float-left"><b>Stake Tokens</b></label>
+                <label className="float-left">
+                  <b>
+                    Stake Tokens
+                  </b>
+                </label>
                 <span className="float-right text-muted">
                   Balance (at my wallet): {window.web3.utils.fromWei(this.props.daiTokenBalance, 'Ether')}
                 </span>
@@ -47,19 +54,26 @@ class Main extends Component {
                   required />
                 <div className="input-group-append">
                   <div className="input-group-text">
-                    <img src={dai} height='32' alt=""/>
+                    <img
+                      src={dai}
+                      height="32"
+                      alt="" />
                     &nbsp;&nbsp;&nbsp; mDAI
                   </div>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary btn-block btn-lg">STAKE!</button>
+              <button
+                type="submit"
+                className="btn btn-primary btn-block btn-lg">
+                STAKE!
+              </button>
             </form>
             <button
               type="submit"
               className="btn btn-link btn-block btn-sm"
               onClick={(event) => {
-                event.preventDefault()
-                this.props.unstakeTokens()
+                event.preventDefault();
+                this.props.unstakeTokens();
               }}>
               UN-STAKE...
             </button>
