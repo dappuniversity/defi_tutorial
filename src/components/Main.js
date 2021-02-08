@@ -9,8 +9,8 @@ class Main extends Component {
         <table className="table table-borderless text-muted text-center">
           <thead>
             <tr>
-              <th scope="col">Staking Balance</th>
-              <th scope="col">Reward Balance</th>
+              <th scope="col">Staking Balance (at Token Farm)</th>
+              <th scope="col">Reward Balance (at my wallet)</th>
             </tr>
           </thead>
           <tbody>
@@ -26,7 +26,7 @@ class Main extends Component {
               className="mb-3"
               onSubmit={event => {
                 event.preventDefault();
-                
+
                 let amount;
                 amount = this.input.value.toString();
                 amount = window.web3.utils.toWei(amount, 'Ether');
@@ -35,7 +35,7 @@ class Main extends Component {
               <div>
                 <label className="float-left"><b>Stake Tokens</b></label>
                 <span className="float-right text-muted">
-                  Balance: {window.web3.utils.fromWei(this.props.daiTokenBalance, 'Ether')}
+                  Balance (at my wallet): {window.web3.utils.fromWei(this.props.daiTokenBalance, 'Ether')}
                 </span>
               </div>
               <div className="input-group mb-4">
