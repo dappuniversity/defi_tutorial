@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "DeFi Token Staking App",
   "author": "gregory@dappuniversity.com",
+  "contributors": [
+    "gregory@dappuniversity.com",
+    "Anton K. <antonkarlovskiy@outlook.com>"
+  ],
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
@@ -26,7 +30,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "truffle-compile": "truffle compile",
+    "truffle-migrate": "truffle migrate",
+    "truffle-migrate-reset": "truffle migrate --reset",
+    "truffle-console": "truffle console",
+    "truffle-test": "truffle test",
+    "truffle-issue-dapp-tokens": "truffle exec scripts/issue-dapp-tokens.js"
   },
   "eslintConfig": {
     "extends": "react-app"
