@@ -1,4 +1,4 @@
-const Farm = artifacts.require('Farm')
+const Farm = artifacts.require('TokenFarm')
 
 module.exports = async function(callback) {
   let tokenFarm = await Farm.deployed()

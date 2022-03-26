@@ -5665,12 +5665,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x689cB867e929Cdd1c69b78B27fb11DAb86B6393e",
-      "transactionHash": "0x72a1f6b5d98180effbdf5231abfac2a6e06413e2c42e4399647bc90a351385b9"
+      "address": "0xa3b7CD36b176E95bfAE9b3c2B769a2aE979a61ED",
+      "transactionHash": "0x50e3c97024611ae72404db81c986da4f21c530a491ac70a30034dc0c0ef2b0d3"
     }
   },
   "schemaVersion": "3.4.6",
-  "updatedAt": "2022-03-24T11:43:54.306Z",
+  "updatedAt": "2022-03-26T17:31:39.935Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
